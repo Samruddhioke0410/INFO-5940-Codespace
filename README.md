@@ -1,63 +1,4 @@
-# INFO 5940 
-Welcome to the INFO 5940 repository. You will complete your work using [**GitHub Codespaces**](#about-github-codespaces) and save your progress in your own GitHub repository. This guide will walk you through setting up the development environment and running the test notebook.  
-
-## Getting Started 
-
-### Step 1: Fork this repository 
-1. Click the **Fork** button (top right of this page).
-2. This will create a copy of the repo under **your own GitHub account**.
-
-Forking creates a personal copy of the repo under **your** GitHub account.  
-- You can commit, push, and experiment freely.  
-- Your work stays separate from the official class materials.
-
-### Step 2: Open your forked repo Codespace
-1. Go to **your forked repo**.
-2. Click the green **Code** button and switch to the **Codespaces** tab.  
-3. Select **Create Codespace**.
-4. Wait a few minutes for the environment to finish setting up.
-
-### Step 3: Verify your environment 
-Once the Codespace is ready: 
-1. If you are in `<your-file-name>.ipynb` in your codespace.
-2. Install the Python 3.11.13 Kernel.  In the top-right corner, click **Select Kernel**.
-    1. If **Install/Enable suggested extensions Python + Jupyter** appears, select it, and wait for the install to finish before moving on to the next step.
-    2. Select **Python Environments** choose **Python 3.11.13 (first option)**.
-3. Run the code block to check your setup. 
-
-## About GitHub Codespaces
-
-[Codespaces](https://docs.github.com/en/codespaces) is a complete software development and execution environment, running in the cloud, with its primary interface being a VSCode instance running in your browser.
-
-Codespaces is not free, but their per-month [free quota](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-quota) is generous.  Codespaces is free under the [GitHub Student Developer Pack](https://education.github.com/pack#github-codespaces).
-
-### Codespaces Tips
-
-* Codespaces keep running even when you close your browser (but will time out and stop after a while)
-* Unless you're on a free plan, or within your free quota, costs acrue while the codespace is running, whether or not you have it open in your browser or are working on it
-* You can control when it's running, and the space it takes up.  Check out [GitHub's codespaces lifecycle documentation](https://docs.github.com/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
-
-## Sync Updates 
-To make sure your personal forked repository stays up to date with the original class repository, please follow these steps:
-1. Open your forked repo.
-2. At the top of the page, you should see a banner or menu option that shows whether your fork is behind the original repo.
-3. Click the **Sync fork** button.
-4. In the dropdown, choose **Update branch** to pull the latest changes from the original repo into your fork.
-
-Optionally, you can also follow these steps to create a new branch on your fork:
-1. Open your **forked repository** on GitHub.  
-2. At the top of the page, next to the branch dropdown, click the **Branches** button.  
-3. In the **Branches** view, click the green **New Branch** button.  
-4. In the popup window, enter a branch name.  
-   - You can use any name you like, but it’s recommended to match the branch name used in class for better organization.  
-5. Under **Branch source**, select:  
-   - **Repository:** `AyhamB/INFO-5940-Codespace`  
-   - **Branch:** choose the branch you want to sync from (e.g., `streamlit`).  
-6. Click the green **Create New Branch** button.  
-7. Verify that you’re now back in **your fork**, on the new branch you just created.  
-8. Click the **Code** button and create a new Codespace (if you don’t already have one).  
-   - Make sure the Codespace is created from the **current branch**.
-  
+# INFO 5940  
 ## Running a Streamlit App on Codespaces  
 Follow these steps to launch and view your Streamlit app in GitHub Codespaces:
 1. **Open the terminal** inside your Codespace.
@@ -88,5 +29,156 @@ You will receive an individual API Key for class assignments. To prevent acciden
    API_KEY="your_actual_API_KEY" streamlit run your-file-name.py
    ```
 
-## Troubleshooting
-- The Jupyter extension should install automatically. If you still cannot select a Python kernel on Jupyter Notebook: Go to the left sidebar >> **Extensions** >> search for **Jupyter** >> reload window (or reinstall it).   
+---
+
+# Assignment 1: RAG Chat Application
+
+## Overview
+
+This assignment implements a **Retrieval-Augmented Generation (RAG)** chat application that allows users to upload documents in txt and pdf versions and interact with their content through a conversational AI interface.
+
+### Key Features
+
+**Multi-format Document Support**: Upload both `.txt` and `.pdf` files
+**Multiple Document Upload**: Process and query across multiple documents simultaneously
+**Conversational Interface**: Natural multi-turn conversations with chat history
+**RAG Pipeline**: Semantic search retrieval combined with LLM generation
+**Document Chunking**: Efficient processing of large documents
+**Grounded Responses**: Answers strictly based on uploaded document content
+
+### Technical Architecture
+
+- **Frontend**: Streamlit web interface
+- **RAG Framework**: LangChain and LangGraph
+- **Vector Database**: ChromaDB for semantic search
+- **Embeddings**: OpenAI text-embedding-3-large model
+- **LLM**: GPT-4o via Cornell AI API
+- **Document Processing**: LangChain document loaders and text splitters
+
+---
+
+## How to Run the Application
+
+### Prerequisites
+
+- GitHub Codespace environment (provided template)
+- Cornell AI API key
+
+### Step 1: Set Your API Keys
+
+**IMPORTANT**: You need to set BOTH environment variables before running the application:
+
+```bash
+export API_KEY="your-api-key-here"
+export OPENAI_API_KEY="your-api-key-here"  # Same key, required for LangChain
+export OPENAI_BASE_URL="https://api.ai.it.cornell.edu"
+```
+
+**Why both keys?**
+- `API_KEY`: Used by the OpenAI client for streaming responses
+- `OPENAI_API_KEY`: Used by LangChain components (embeddings, LLM)
+- Both should contain the same Cornell API key
+
+**Alternative (run and set key simultaneously):**
+```bash
+API_KEY="your-key" OPENAI_API_KEY="your-key" OPENAI_BASE_URL="https://api.ai.it.cornell.edu" streamlit run chat_with_pdf.py
+```
+
+### Step 2: Run the Application
+
+```bash
+streamlit run chat_with_pdf.py
+```
+
+### Step 3: Use the Application
+
+1. **Upload Documents**: Click "Browse files" and select one or more `.txt` or `.pdf` files
+2. **Wait for Processing**: The app will chunk documents and create embeddings
+3. **Ask Questions**: Type questions about your documents in the chat input
+4. **Get Answers**: Receive AI-generated responses based solely on document content
+5. **Follow-up Questions**: Continue the conversation - the bot remembers context
+
+---
+
+## Modifications to Provided Setup
+
+### Changes to `requirements.txt`
+
+**Added dependencies:**
+```txt
+langchain-chroma==1.0.0  # Vector database integration for LangChain
+chromadb==1.2.2          # Vector storage backend
+```
+
+**Modified dependencies:**
+```txt
+pandas>=2.3.3  # Updated from pandas==2 to fix numpy compatibility issue
+```
+
+**Reason for changes:**
+- `langchain-chroma` and `chromadb` were not in the original template but are required for the RAG vector database
+- `pandas` upgrade fixes runtime error: `ValueError: numpy.dtype size changed`
+
+### Changes to `.devcontainer/devcontainer.json`
+
+
+**Security**: API keys are set at runtime via `export` commands, never committed to the repository.
+
+---
+
+## Implementation Details
+
+### RAG Pipeline Components
+
+1. **Document Loading** ([chat_with_pdf.py:49-60](chat_with_pdf.py#L49-L60))
+   - TextLoader for `.txt` files
+   - PyPDFLoader for `.pdf` files
+
+2. **Chunking Strategy** ([chat_with_pdf.py:64-67](chat_with_pdf.py#L64-L67))
+   - Chunk size: 500 characters
+   - Chunk overlap: 50 characters
+   - Method: RecursiveCharacterTextSplitter
+
+3. **Embeddings & Vector Store** ([chat_with_pdf.py:107-110](chat_with_pdf.py#L107-L110))
+   - Model: `openai.text-embedding-3-large`
+   - Database: ChromaDB (in-memory)
+
+4. **Retrieval** ([chat_with_pdf.py:119-123](chat_with_pdf.py#L119-L123))
+   - Search type: Similarity search
+   - Top-k: 12 most relevant chunks
+
+5. **Generation** ([chat_with_pdf.py:144-148](chat_with_pdf.py#L144-L148))
+   - Model: `openai.gpt-4o` (Cornell API format)
+   - Temperature: 0.2 (for more factual responses)
+   - Streaming: Real-time response generation
+
+### Conversation History
+
+The application maintains full conversation history and passes it to the LLM for context-aware responses ([chat_with_pdf.py:131-141](chat_with_pdf.py#L131-L141)), enabling natural follow-up questions like:
+- User: "What is RAG?"
+- Bot: [detailed answer]
+- User: "Can you make that shorter?"
+- Bot: [condensed version]
+
+---
+
+## Testing the Application
+
+### Recommended Test Flow
+
+1. **Basic upload**: Upload `data/RAG_source.txt`
+2. **Simple question**: "What is Zelomax?"
+3. **Multi-part question**: "What are the side effects and contraindications?"
+4. **Follow-up**: "Can you summarize that in bullet points?"
+5. **Out-of-scope question**: "What is the capital of France?" (should say "I don't have enough information")
+6. **Multiple documents**: Upload multiple PDFs and .txt files and ask cross-document questions
+
+### Expected Behavior
+
+- Answers should be detailed and well-structured
+- Answers should only use document content
+- Should handle follow-up questions with context
+- Should gracefully decline questions outside document scope
+- Should process multiple documents seamlessly
+
+---
