@@ -31,6 +31,10 @@ This assignment implements a **Retrieval-Augmented Generation (RAG)** chat appli
 
 - GitHub Codespace environment (provided template)
 - Cornell AI API key
+- Ensure you have all the dependencies installed, else, please enter in terminal the following:
+```bash
+pip install -r requirements.txt
+```
 
 ### Step 1: Set Your API Keys
 
@@ -74,7 +78,7 @@ streamlit run chat_with_pdf.py
 
 **Added dependencies:**
 ```txt
-langchain-chroma==1.0.0  # Vector database integration for LangChain
+langchain-chroma<1.0.0  # Vector database integration for LangChain
 chromadb==1.2.2          # Vector storage backend
 ```
 
