@@ -38,7 +38,7 @@ Question: {question}
 
 Answer:""")
 
-st.title("📝 RAG Chat with Documents")
+st.title("🤖 Chatty DocuBot")
 uploaded_files = st.file_uploader(
     "Upload document(s)",
     type=["txt", "pdf"],
